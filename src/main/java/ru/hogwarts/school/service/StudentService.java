@@ -86,9 +86,10 @@ public class StudentService {
         logger.info("Was invoked method for get average age students");
         return studentRepository.getAvgAgeStudents();
     }
-    public Double getAverageAgeStudents(){
+
+    public Double getAverageAgeStudents() {
         logger.info("Was invoked method for get average age students");
-        return studentRepository.findAll().stream().mapToDouble(s ->  s.getAge()).average().orElseThrow();
+        return studentRepository.findAll().stream().mapToDouble(s -> s.getAge()).average().orElseThrow();
     }
 
 
@@ -99,7 +100,7 @@ public class StudentService {
 
     public List<String> getAllStudentsWithNameStartedA() {
         logger.info("Was invoked method for get all students with name started A");
-      return   studentRepository
+        return studentRepository
                 .findAll()
                 .stream()
                 .filter(s -> s.getName().startsWith("A"))
@@ -110,6 +111,39 @@ public class StudentService {
 
     }
 
+   public void printStudents() {
+        List<Student> students = studentRepository.findAll();
+        getStudentName(students.get(0));
+        getStudentName(students.get(1));
+        new Thread(() -> {
+            getStudentName(students.get(2));
+            getStudentName(students.get(3));
+        }).start();
+        new Thread(() -> {
+            getStudentName(students.get(4));
+            getStudentName(students.get(5));
+        }).start();
+    }
 
+    public void printStudentsSync(){
+        List<Student> students = studentRepository.findAll();
+        getStudentNameSync(students.get(0));
+        getStudentNameSync(students.get(1));
+        new Thread(() -> {
+            getStudentNameSync(students.get(2));
+            getStudentNameSync(students.get(3));
+        }).start();
+        new Thread(() -> {
+            getStudentNameSync(students.get(4));
+            getStudentNameSync(students.get(5));
+        }).start();
+    }
+
+    private void getStudentName(Student student) {
+        logger.info("id = " + student.getId() + " name = " + student.getName());
+    }
+    private synchronized void  getStudentNameSync(Student student) {
+        logger.info("id = " + student.getId() + " name = " + student.getName());
+    }
 
 }
