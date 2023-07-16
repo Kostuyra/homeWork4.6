@@ -79,4 +79,14 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAverageAgeStudents());
     }
 
+    @GetMapping("print")
+    public ResponseEntity<Void> printStudents() {
+        studentService.printStudents();
+        return ResponseEntity.ok().build();
+    }
+    @GetMapping("print-sync")
+    public ResponseEntity<Void> printStudentsSync() {
+        studentService.printStudentsSync();
+        return ResponseEntity.ok().build();
+    }
 }
